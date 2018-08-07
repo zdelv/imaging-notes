@@ -401,4 +401,7 @@ Policies
 Setup
 ------------
 
+<script>window.markdeepOptions = {mode: 'html'};</script> 
+<script src="markdeep.min.js"></script>
+
 <!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js"></script><script src="https://casual-effects.com/markdeep/latest/markdeep.min.js?" type="text/javascript"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>
