@@ -331,36 +331,54 @@ Device Enrollment Protocol (DEP)
 Apple's solution to laptop setup (whether that be imaging or not) is the Device Enrollment Protocol. This is just a fancy name for a tiny payload that can be forced on a laptop during Setup Assistant. Not much can be done with DEP (at least through JSS) but what it does allow is for us to enroll devices into JSS instantly after boot.
 
 The positives of DEP:
-    + Apple supports it
-    + It isn't scripted (all GUI based in JSS)
-    + Automatic: 
-        + Profile creation (ie tech or teachers, if we decided to do that)
-        + User Approved Mobile Device Management Profiles (see UAMDM)
++ Apple supports it
++ It isn't scripted (all GUI based in JSS)
++ Automatic: 
+    + Profile creation (ie tech or teachers, if we decided to do that)
+    + User Approved Mobile Device Management Profiles (see UAMDM)
 
 The negatives of DEP:
-    + For it to be worth it, the laptop must be imaged, or a fresh unbox
-    + For what Apple plays it up to be, it honestly does not do that much. There is very little ability to do arbitrary commands/installations/policies off of it. This means that the overwhelming majority of the "imaging" is just policy cascading through specific smart grouping.
-    + Depending on your PoV, the lack of scripting is a nightmare
-    + It is slow
-    + Overly dependent on external servers (DEP is 100% external, minus the setup to JSS)
-    + JSS seems to be lacking some of the abilities that DEP has (that being computer naming prior to enrollment)
++ For it to be worth it, the laptop must be imaged, or a fresh unbox
++ For what Apple plays it up to be, it honestly does not do that much. There is very little ability to do arbitrary commands/installations/policies off of it. This means that the overwhelming majority of the "imaging" is just policy cascading through specific smart grouping.
++ Depending on your PoV, the lack of scripting is a nightmare
++ It is slow
++ Overly dependent on external servers (DEP is 100% external, minus the setup to JSS)
++ JSS seems to be lacking some of the abilities that DEP has (that being computer naming prior to enrollment)
 
 DEP works through [Apple School](school.apple.com) (previously known as dep.apple.com) where a device is enrolled via serial number. For iPads this gives us both Supervision and Management over the device. For MacBooks, all we get is just a list of the devices we own, and a tie into the Setup Assistant. This list of devices is then hooked up to our local JSS server via a token, which allows JSS to pull all of the devices into a 'PreStage Enrollment'. 
 
-**PreStage Enrollments** are what allow us to select specific devices and place them into a group to be enrolled after being picked up by DEP during Setup. There are also a few other settings that are modifiable, like AD Binding, Local Users, Purchasing Info, and a few others. No option allows for an arbitrary script to be run after it finishes though, leaving us with a bit of a problem when it comes to automating the entire imaging process. To put it simply, PreStage Enrollments are just JAMF's implementation of the client side part of DEP. Nothing special exists with it. If Apple decides to give or remove the ability to do something then JAMF is at their will.
+**PreStage Enrollments** are what allow us to select specific devices and place them into a group to be enrolled after being picked up by DEP during Setup. There are also a few other settings that are modifiable, like AD Binding, Local Users, Purchasing Info, and a few others. No option allows for an arbitrary script to be run after it finishes though, leaving us with a bit of a problem when it comes to automating the entire imaging process. To put it simply, PreStage Enrollments are just JAMF's implementation of the client side part of DEP. Nothing special exists with it. If Apple decides to give or remove the ability to do something then JAMF is at their will. Because of the lack of scripting and command input, we have to use what is called (or I call) Policy Cascading. See Naming for more info on this.
 
 To say that DEP is woefully underwhelming is an understatement. For what it's worth, DEP is a solution to a problem, and that's about it. Its not pretty nor is it fast, but it (sometimes) works and until Apple creates another solution for imaging/setup, we're stuck with it.
+
 
 
 User Approved Mobile Device Management (UAMDM)
 ----------
 
+User Approved Mobile Device Management (UAMDM) is Apple's new form of MDM profile, that is given more permissions than a standard profile. Currently (as of 10.13.6) UAMDM profiles give you the ability to apply Kernel Extensions (kexts) to a device. They do not have any other permissions that are different from a standard MDM profile. They were introduced into macOS in 10.13.3.
+
+To get a UAMDM profile you must do one of the following:
++ Enroll a device through DEP, whether it be before or after imaging (profiles -N)
++ Be grandfathered into it by upgrading from 10.13.2 or below to 10.13.3 or higher.
++ Manually approve the profile by opening profiles in System Preferences and clicking approve.
+
+While UAMDM profiles may seem kinda useless for our infrastructure currently, as we do not use any kexts, Apple did announce during WWDC 2018 that testing applications can soon require that an MDM profile be User Approved for them to accept the testing environment. Since we plan on using almost all of our devices for testing, we need to make sure that any imaging or repairs we do to a laptop leave it with a UAMDM profile. JSS has the ability to detect when a profile is not User Approved, and we can scope to that to check that every laptop has the correct profile.
 
 
-The best explanation for UAMDM that I have read would be a problem that Apple created where its only solution is DEP.
+The best explanation for UAMDM that I have read would be a problem that Apple created where its only real solution is DEP.
 
 Setup
 ------------
+
+Setting up DEP is sometimes easy and other times an absolute nightmare. JAMF's implementation of the MDM side of DEP is definitely buggy and has its issues, so you will need to probably fight through them.
+
+To go from nothing to a work PreStage Enrollment do the following:
+1. Start by going to JSS > Computers > PreStage Enrollments and create a new PreStage.
+2. Give it a reasonable name (you will need it later)
+3. Make sure the Device Enrollment Program Instance is set to Amherst Mobile Devices.
+4. j
+
 
 
 Naming
@@ -384,4 +402,4 @@ Policies
 Setup
 ------------
 
-<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js"></script><script src="https://casual-effects.com/markdeep/latest/markdeep.min.js?"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="https://casual-effects.com/markdeep/latest/markdeep.min.js?"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>
