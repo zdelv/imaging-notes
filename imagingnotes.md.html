@@ -376,8 +376,7 @@ Setting up DEP is sometimes easy and other times an absolute nightmare. JAMF's i
 To go from nothing to a work PreStage Enrollment do the following:
 1. Start by going to JSS > Computers > PreStage Enrollments and create a new PreStage.
 2. Give it a reasonable name (you will need it later)
-3. Make sure the Device Enrollment Program Instance is set to Amherst Mobile Devices.
-4. j
+3. Make sure the Device Enrollment Program Instance is set to Amherst Mobile Devices
 
 
 
@@ -402,4 +401,4 @@ Policies
 Setup
 ------------
 
-<!-- Markdeep: --><script src="https://casual-effects.com/markdeep/latest/markdeep.min.js?"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js"></script><script src="https://casual-effects.com/markdeep/latest/markdeep.min.js?"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>
